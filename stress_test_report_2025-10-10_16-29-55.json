@@ -1,0 +1,722 @@
+{
+    "timestamp": "2025-10-10 16:29:55",
+    "config": {
+        "concurrent_users": 100,
+        "base_url": "http:\/\/localhost\/dqsmart\/"
+    },
+    "summary": {
+        "total_execution_time": 7.03049111366272,
+        "avg_response_time": 2.5360830199999995,
+        "successful_logins": 0,
+        "failed_logins": 100,
+        "white_screens": 0,
+        "white_screen_percentage": 0
+    },
+    "db_test": {
+        "successful": 100,
+        "failed": 0,
+        "time": 1.0889849662780762
+    },
+    "detailed_results": {
+        "1": {
+            "user_id": 1,
+            "http_code": 404,
+            "response_time": 0.016647,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "2": {
+            "user_id": 2,
+            "http_code": 404,
+            "response_time": 0.016061,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "3": {
+            "user_id": 3,
+            "http_code": 404,
+            "response_time": 0.015539,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "4": {
+            "user_id": 4,
+            "http_code": 404,
+            "response_time": 0.015165,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "5": {
+            "user_id": 5,
+            "http_code": 404,
+            "response_time": 0.014914,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "6": {
+            "user_id": 6,
+            "http_code": 404,
+            "response_time": 0.014637,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "7": {
+            "user_id": 7,
+            "http_code": 404,
+            "response_time": 0.014436,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "8": {
+            "user_id": 8,
+            "http_code": 404,
+            "response_time": 0.014217,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "9": {
+            "user_id": 9,
+            "http_code": 404,
+            "response_time": 0.014073,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "10": {
+            "user_id": 10,
+            "http_code": 404,
+            "response_time": 0.013868,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "11": {
+            "user_id": 11,
+            "http_code": 404,
+            "response_time": 0.0137,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "12": {
+            "user_id": 12,
+            "http_code": 404,
+            "response_time": 0.0136,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "13": {
+            "user_id": 13,
+            "http_code": 404,
+            "response_time": 0.013262,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "14": {
+            "user_id": 14,
+            "http_code": 404,
+            "response_time": 0.01311,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "15": {
+            "user_id": 15,
+            "http_code": 404,
+            "response_time": 0.013585,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "16": {
+            "user_id": 16,
+            "http_code": 404,
+            "response_time": 0.013897,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "17": {
+            "user_id": 17,
+            "http_code": 404,
+            "response_time": 0.014198,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "18": {
+            "user_id": 18,
+            "http_code": 404,
+            "response_time": 0.014544,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "19": {
+            "user_id": 19,
+            "http_code": 404,
+            "response_time": 0.014975,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "20": {
+            "user_id": 20,
+            "http_code": 404,
+            "response_time": 0.015191,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "21": {
+            "user_id": 21,
+            "http_code": 404,
+            "response_time": 0.015294,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "22": {
+            "user_id": 22,
+            "http_code": 404,
+            "response_time": 0.015414,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "23": {
+            "user_id": 23,
+            "http_code": 404,
+            "response_time": 0.015759,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "24": {
+            "user_id": 24,
+            "http_code": 404,
+            "response_time": 0.0157,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "25": {
+            "user_id": 25,
+            "http_code": 404,
+            "response_time": 0.015638,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "26": {
+            "user_id": 26,
+            "http_code": 404,
+            "response_time": 0.015774,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "27": {
+            "user_id": 27,
+            "http_code": 404,
+            "response_time": 0.015603,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "28": {
+            "user_id": 28,
+            "http_code": 404,
+            "response_time": 0.015627,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "29": {
+            "user_id": 29,
+            "http_code": 404,
+            "response_time": 0.015529,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "30": {
+            "user_id": 30,
+            "http_code": 404,
+            "response_time": 0.015462,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "31": {
+            "user_id": 31,
+            "http_code": 404,
+            "response_time": 0.015326,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "32": {
+            "user_id": 32,
+            "http_code": 404,
+            "response_time": 0.015411,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "33": {
+            "user_id": 33,
+            "http_code": 404,
+            "response_time": 0.015335,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "34": {
+            "user_id": 34,
+            "http_code": 404,
+            "response_time": 0.01527,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "35": {
+            "user_id": 35,
+            "http_code": 404,
+            "response_time": 0.015385,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "36": {
+            "user_id": 36,
+            "http_code": 404,
+            "response_time": 0.015324,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "37": {
+            "user_id": 37,
+            "http_code": 404,
+            "response_time": 0.015266,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "38": {
+            "user_id": 38,
+            "http_code": 404,
+            "response_time": 0.015195,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "39": {
+            "user_id": 39,
+            "http_code": 404,
+            "response_time": 0.015313,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "40": {
+            "user_id": 40,
+            "http_code": 404,
+            "response_time": 0.015256,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "41": {
+            "user_id": 41,
+            "http_code": 404,
+            "response_time": 0.0152,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "42": {
+            "user_id": 42,
+            "http_code": 404,
+            "response_time": 0.015141,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "43": {
+            "user_id": 43,
+            "http_code": 404,
+            "response_time": 0.015218,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "44": {
+            "user_id": 44,
+            "http_code": 404,
+            "response_time": 0.014994,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "45": {
+            "user_id": 45,
+            "http_code": 404,
+            "response_time": 0.015078,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "46": {
+            "user_id": 46,
+            "http_code": 404,
+            "response_time": 0.014829,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "47": {
+            "user_id": 47,
+            "http_code": 404,
+            "response_time": 0.014904,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "48": {
+            "user_id": 48,
+            "http_code": 404,
+            "response_time": 0.014829,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "49": {
+            "user_id": 49,
+            "http_code": 404,
+            "response_time": 0.014766,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "50": {
+            "user_id": 50,
+            "http_code": 404,
+            "response_time": 0.01471,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "51": {
+            "user_id": 51,
+            "http_code": 404,
+            "response_time": 0.01465,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "52": {
+            "user_id": 52,
+            "http_code": 404,
+            "response_time": 0.014585,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "53": {
+            "user_id": 53,
+            "http_code": 404,
+            "response_time": 0.014525,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "54": {
+            "user_id": 54,
+            "http_code": 404,
+            "response_time": 0.01446,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "55": {
+            "user_id": 55,
+            "http_code": 404,
+            "response_time": 0.014392,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "56": {
+            "user_id": 56,
+            "http_code": 404,
+            "response_time": 0.014519,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "57": {
+            "user_id": 57,
+            "http_code": 404,
+            "response_time": 0.014437,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "58": {
+            "user_id": 58,
+            "http_code": 404,
+            "response_time": 0.014382,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "59": {
+            "user_id": 59,
+            "http_code": 404,
+            "response_time": 0.0141,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "60": {
+            "user_id": 60,
+            "http_code": 404,
+            "response_time": 0.014222,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "61": {
+            "user_id": 61,
+            "http_code": 404,
+            "response_time": 0.014153,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "62": {
+            "user_id": 62,
+            "http_code": 404,
+            "response_time": 0.014089,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "63": {
+            "user_id": 63,
+            "http_code": 404,
+            "response_time": 0.014011,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "64": {
+            "user_id": 64,
+            "http_code": 404,
+            "response_time": 0.013934,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "65": {
+            "user_id": 65,
+            "http_code": 404,
+            "response_time": 7.019315,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "66": {
+            "user_id": 66,
+            "http_code": 404,
+            "response_time": 7.018857,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "67": {
+            "user_id": 67,
+            "http_code": 404,
+            "response_time": 7.019203,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "68": {
+            "user_id": 68,
+            "http_code": 404,
+            "response_time": 7.019346,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "69": {
+            "user_id": 69,
+            "http_code": 404,
+            "response_time": 7.018681,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "70": {
+            "user_id": 70,
+            "http_code": 404,
+            "response_time": 7.01902,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "71": {
+            "user_id": 71,
+            "http_code": 404,
+            "response_time": 7.018965,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "72": {
+            "user_id": 72,
+            "http_code": 404,
+            "response_time": 7.019117,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "73": {
+            "user_id": 73,
+            "http_code": 404,
+            "response_time": 7.01846,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "74": {
+            "user_id": 74,
+            "http_code": 404,
+            "response_time": 7.018787,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "75": {
+            "user_id": 75,
+            "http_code": 404,
+            "response_time": 7.018716,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "76": {
+            "user_id": 76,
+            "http_code": 404,
+            "response_time": 7.018666,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "77": {
+            "user_id": 77,
+            "http_code": 404,
+            "response_time": 7.018612,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "78": {
+            "user_id": 78,
+            "http_code": 404,
+            "response_time": 7.018739,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "79": {
+            "user_id": 79,
+            "http_code": 404,
+            "response_time": 7.018684,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "80": {
+            "user_id": 80,
+            "http_code": 404,
+            "response_time": 7.018442,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "81": {
+            "user_id": 81,
+            "http_code": 404,
+            "response_time": 7.018571,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "82": {
+            "user_id": 82,
+            "http_code": 404,
+            "response_time": 7.019515,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "83": {
+            "user_id": 83,
+            "http_code": 404,
+            "response_time": 7.018464,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "84": {
+            "user_id": 84,
+            "http_code": 404,
+            "response_time": 7.018031,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "85": {
+            "user_id": 85,
+            "http_code": 404,
+            "response_time": 7.018616,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "86": {
+            "user_id": 86,
+            "http_code": 404,
+            "response_time": 7.018029,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "87": {
+            "user_id": 87,
+            "http_code": 404,
+            "response_time": 7.018352,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "88": {
+            "user_id": 88,
+            "http_code": 404,
+            "response_time": 7.018658,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "89": {
+            "user_id": 89,
+            "http_code": 404,
+            "response_time": 7.018207,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "90": {
+            "user_id": 90,
+            "http_code": 404,
+            "response_time": 7.01823,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "91": {
+            "user_id": 91,
+            "http_code": 404,
+            "response_time": 7.017159,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "92": {
+            "user_id": 92,
+            "http_code": 404,
+            "response_time": 7.016999,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "93": {
+            "user_id": 93,
+            "http_code": 404,
+            "response_time": 7.017851,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "94": {
+            "user_id": 94,
+            "http_code": 404,
+            "response_time": 7.017689,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "95": {
+            "user_id": 95,
+            "http_code": 404,
+            "response_time": 7.016725,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "96": {
+            "user_id": 96,
+            "http_code": 404,
+            "response_time": 7.017213,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "97": {
+            "user_id": 97,
+            "http_code": 404,
+            "response_time": 7.017519,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "98": {
+            "user_id": 98,
+            "http_code": 404,
+            "response_time": 7.017463,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "99": {
+            "user_id": 99,
+            "http_code": 404,
+            "response_time": 7.017414,
+            "response_length": 196,
+            "is_white_screen": false
+        },
+        "100": {
+            "user_id": 100,
+            "http_code": 404,
+            "response_time": 7.017359,
+            "response_length": 196,
+            "is_white_screen": false
+        }
+    }
+}

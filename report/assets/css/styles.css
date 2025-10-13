@@ -1,0 +1,44 @@
+body {
+    background-color: #F5F8FA;
+    padding-top: 70px;
+}
+
+.card {
+    border: 1px solid #AAB8C2;
+}
+
+.form-filter .col-form-label {
+    text-align: start !important;
+}
+
+.table-report thead tr {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-report thead tr th.small {
+    width: 8%;
+}
+
+@media (min-width: 992px) { 
+    .form-filter .col-form-label {
+        text-align: end !important;
+    }   
+}
+
+.bg-grade-a {
+    background-color: #260e83 !important;
+    color: #FFFFFF !important;
+}
+
+.bg-grade-b {
+    background-color: #f58a0a !important;
+}
+
+.bg-grade-c {
+    background-color: #ed2207 !important;
+}
+
+.bg-grade-d {
+    background-color: #c40010 !important;
+}

@@ -1,0 +1,26 @@
+Test started at: Fri, Oct 10, 2025 23:28:35
+Target URL: http://localhost/dqsmart/
+================================
+Testing with 5 concurrent users at Fri, Oct 10, 2025 23:28:35
+stdout is not a tty
+Testing with 10 concurrent users at Fri, Oct 10, 2025 23:28:46
+stdout is not a tty
+Testing with 25 concurrent users at Fri, Oct 10, 2025 23:28:56
+stdout is not a tty
+Testing with 50 concurrent users at Fri, Oct 10, 2025 23:29:06
+stdout is not a tty
+Memory usage: %
+Testing with 75 concurrent users at Fri, Oct 10, 2025 23:29:16
+stdout is not a tty
+Memory usage: %
+Testing with 100 concurrent users at Fri, Oct 10, 2025 23:29:26
+stdout is not a tty
+Memory usage: %
+Testing with 150 concurrent users at Fri, Oct 10, 2025 23:29:37
+stdout is not a tty
+Memory usage: %
+Testing with 200 concurrent users at Fri, Oct 10, 2025 23:29:47
+stdout is not a tty
+Memory usage: %
+Test completed at: Fri, Oct 10, 2025 23:29:57
+=== TEST SUMMARY ===
