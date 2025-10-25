@@ -26,9 +26,6 @@ if (isset($_GET['toDate'])) {
     }
 }
 
-// Jika ada parameter school, fokus ke sekolah tersebut
-// Jika tidak ada, ambil semua sekolah
-$schools_to_process = [];
 
 // Convert logo to base64 for PDF
 $logo_path = 'img/logo.png';
@@ -36,17 +33,6 @@ $logo_base64 = '';
 if (file_exists($logo_path)) {
     $logo_data = file_get_contents($logo_path);
     $logo_base64 = 'data:image/png;base64,' . base64_encode($logo_data);
-}
-
-if ($param_school != "") {
-    $schools_to_process[] = $param_school;
-} else {
-    // Ambil semua sekolah
-    $sqlSchools = "SELECT DISTINCT SCHOOL FROM account WHERE STATE ='FINISH' ORDER BY SCHOOL";
-    $resultSchools = $conn->query($sqlSchools);
-    while ($schoolRow = $resultSchools->fetch_assoc()) {
-        $schools_to_process[] = $schoolRow['SCHOOL'];
-    }
 }
 
 // Function untuk mendapatkan data per sekolah
@@ -83,7 +69,6 @@ function getSchoolData($conn, $school, $from_date, $to_date)
     }
 
     $sql .= " GROUP BY A.SCHOOL, A.GRADE ORDER BY A.GRADE";
-
     return $conn->query($sql);
 }
 
@@ -397,13 +382,8 @@ $html = '
 <body>';
 
 // Process each school
-foreach ($schools_to_process as $index => $school) {
-    if ($index > 0) {
-        $html .= '<div style="page-break-before: always;"></div>';
-    }
-
-    $schoolResult = getSchoolData($conn, $school, $from_date, $to_date);
-
+    $schoolResult = getSchoolData($conn, $param_school, $from_date, $to_date);
+   
     if ($schoolResult->num_rows > 0) {
         $schoolData = [];
         while ($row = $schoolResult->fetch_assoc()) {
@@ -428,7 +408,7 @@ foreach ($schools_to_process as $index => $school) {
                     </td>
                     <td class="hashtag-cell">
                         <p class="hashtag">#DQEveryOne</p>
-                        <p class="school-name">School Name: ' . $school . '</p>
+                        <p class="school-name">School Name: ' . $param_school . '</p>
                     </td>
                 </tr>
             </table>
@@ -460,38 +440,28 @@ foreach ($schools_to_process as $index => $school) {
             
             <table class="data-table">';
         
-        // Data rows berdasarkan contoh PDF
-        $sampleData = [
-            ['grade' => '10.A', 'screen_time' => 65, 'privacy' => 110, 'cyber_security' => 116, 'digital_citizen' => 85],
-            ['grade' => '10.B', 'screen_time' => 60, 'privacy' => 100, 'cyber_security' => 110, 'digital_citizen' => 116],
-            ['grade' => '10.C', 'screen_time' => 100, 'privacy' => 120, 'cyber_security' => 113, 'digital_citizen' => 105],
-            ['grade' => '11.A', 'screen_time' => 80, 'privacy' => 130, 'cyber_security' => 118, 'digital_citizen' => 115],
-            ['grade' => '11.B', 'screen_time' => 90, 'privacy' => 115, 'cyber_security' => 105, 'digital_citizen' => 110],
-            ['grade' => '11.C', 'screen_time' => 115, 'privacy' => 120, 'cyber_security' => 128, 'digital_citizen' => 125],
-            ['grade' => '12', 'screen_time' => 105, 'privacy' => 117, 'cyber_security' => 130, 'digital_citizen' => 121]
-        ];
-        
+
         function getScoreClass($score) {
             if($score < 85) return "score-red";
             elseif($score < 116) return "score-orange";
             else return "score-blue";
         }
-        
-        foreach($sampleData as $data) {
+
+        foreach($schoolData as $data) {
             $html .= '
                 <tr>
-                    <td class="grade-cell">' . $data['grade'] . '</td>
+                    <td class="grade-cell">' . $data['GRADE'] . '</td>
                     <td class="score-cell">
                         <div class="score-pill ' . getScoreClass($data['screen_time']) . '">' . $data['screen_time'] . '</div>
                     </td>
                     <td class="score-cell">
-                        <div class="score-pill ' . getScoreClass($data['privacy']) . '">' . $data['privacy'] . '</div>
+                        <div class="score-pill ' . getScoreClass($data['privacy_management']) . '">' . $data['privacy_management'] . '</div>
                     </td>
                     <td class="score-cell">
-                        <div class="score-pill ' . getScoreClass($data['cyber_security']) . '">' . $data['cyber_security'] . '</div>
+                        <div class="score-pill ' . getScoreClass($data['cyber_security_management']) . '">' . $data['cyber_security_management'] . '</div>
                     </td>
                     <td class="score-cell">
-                        <div class="score-pill ' . getScoreClass($data['digital_citizen']) . '">' . $data['digital_citizen'] . '</div>
+                        <div class="score-pill ' . getScoreClass($data['digital_citizen_identity']) . '">' . $data['digital_citizen_identity'] . '</div>
                     </td>
                 </tr>';
         }
@@ -569,12 +539,10 @@ foreach ($schools_to_process as $index => $school) {
             dq-Smartplus
         </div>';
     }
-}
 
 $html .= '
 </body>
 </html>';
-die($html);
 // Configure Dompdf
 $options = new Options();
 $options->set('defaultFont', 'Arial');
@@ -595,103 +563,3 @@ $schoolName = $param_school ? str_replace(' ', '_', $param_school) : 'All_School
 $filename = 'DQ_Smartplus_School_Report_Summary_' . $schoolName . '_' . date('Ymd_His') . '.pdf';
 $dompdf->stream($filename, array('Attachment' => true));
 exit();
-
-
-        
-        
-            
-            
-            
-            
-            
-            
-            
-        
-
-        
-        
-             
-             
-            
-        
-
-         
-            
-        
-
-        
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-            
-            
-            
-            
-            
-            
-            
-        
-
-        
-        
-             
-             
-            
-        
-
-         
-            
-        
-
-        
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
