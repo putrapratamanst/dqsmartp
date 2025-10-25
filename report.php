@@ -40,42 +40,40 @@
 
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    
+
 
     <style>
+        .table th {
 
-    .table th {
+            vertical-align: middle;
 
-        vertical-align: middle;
+            text-align: center;
 
-        text-align: center;
+            font-size: 12px;
 
-        font-size: 12px;
+            padding: 10px 5px;
 
-        padding: 10px 5px;
+        }
 
-    }
 
-    
 
-    .svg-icon {
+        .svg-icon {
 
-        display: block;
+            display: block;
 
-        margin: 0 auto 5px auto;
+            margin: 0 auto 5px auto;
 
-    }
+        }
 
-    
 
-    .export-btn {
 
-        font-size: 11px;
+        .export-btn {
 
-        padding: 4px 8px;
+            font-size: 11px;
 
-    }
+            padding: 4px 8px;
 
+        }
     </style>
 
 
@@ -86,53 +84,49 @@
 
     <div id="wrapper">
 
-        <?php 
+        <?php
 
-            include 'program/header.php'; 
+        include 'program/header.php';
 
-            include 'program/koneksi.php';
+        include 'program/koneksi.php';
 
-            
 
-            $sqlSchool = "SELECT DISTINCT SCHOOL FROM `account` WHERE STATE ='FINISH' ORDER BY SCHOOL";
 
-            $resultSchool = $conn->query($sqlSchool);
+        $sqlSchool = "SELECT DISTINCT SCHOOL FROM `account` WHERE STATE ='FINISH' ORDER BY SCHOOL";
 
-            
+        $resultSchool = $conn->query($sqlSchool);
 
-            $param_school = isset($_GET['school'])?$_GET['school']:"";
 
-            $from_date = date("Y-m-d", strtotime("-6 months"));
 
-            $to_date = date("Y-m-d");
+        $param_school = isset($_GET['school']) ? $_GET['school'] : "";
 
-            
+        $from_date = date("Y-m-d", strtotime("-6 months"));
 
-            if (isset($_GET['fromDate'])) {
+        $to_date = date("Y-m-d");
 
-                if($_GET['fromDate'] != "") {
 
-                    $from_date = $_GET['fromDate'];
 
-                }
+        if (isset($_GET['fromDate'])) {
 
+            if ($_GET['fromDate'] != "") {
+
+                $from_date = $_GET['fromDate'];
             }
+        }
 
-            
 
-            if (isset($_GET['toDate'])) {
 
-                if($_GET['toDate'] != "") {
+        if (isset($_GET['toDate'])) {
 
-                    $to_date = $_GET['toDate'];
+            if ($_GET['toDate'] != "") {
 
-                }
-
+                $to_date = $_GET['toDate'];
             }
+        }
 
 
 
-            $sql = "
+        $sql = "
 
                 SELECT
 
@@ -172,35 +166,32 @@
 
                     A.STATE = 'FINISH' ";
 
-                    //-- AND A.SCHOOL = 'SMAK Sang Timur'
+        //-- AND A.SCHOOL = 'SMAK Sang Timur'
 
-            
 
-            if($param_school != "") {
 
-                $sql .= " AND A.SCHOOL = '".$param_school."'";
+        if ($param_school != "") {
 
-            }
+            $sql .= " AND A.SCHOOL = '" . $param_school . "'";
+        }
 
-            
 
-            if ($from_date != "") {
 
-                $sql .= " AND R.ACTIVITY_ON >= '".$from_date." 00:00:00'";
+        if ($from_date != "") {
 
-            }
+            $sql .= " AND R.ACTIVITY_ON >= '" . $from_date . " 00:00:00'";
+        }
 
-            
 
-            if ($to_date != "") {
 
-                $sql .= " AND R.ACTIVITY_ON <= '".$to_date." 23:59:00'";
+        if ($to_date != "") {
 
-            }
+            $sql .= " AND R.ACTIVITY_ON <= '" . $to_date . " 23:59:00'";
+        }
 
-            
 
-            $sql .= " GROUP BY
+
+        $sql .= " GROUP BY
 
                     A.SCHOOL,
 
@@ -214,47 +205,43 @@
 
             ";
 
-            $result = $conn->query($sql);
+        $result = $conn->query($sql);
 
-            
 
-            function getBgColor($nilai) {
 
-                $warna = "";
+        function getBgColor($nilai)
+        {
 
-                if($nilai > 115) {
+            $warna = "";
 
-                    $warna = "#260e83";
+            if ($nilai > 115) {
 
-                } elseif($nilai >= 100) {
+                $warna = "#260e83";
+            } elseif ($nilai >= 100) {
 
-                    $warna = "#f58a0a";
+                $warna = "#f58a0a";
+            } elseif ($nilai >= 85) {
 
-                } elseif($nilai >= 85) {
+                $warna = "#ed2207";
+            } else {
 
-                    $warna = "#ed2207";
-
-                } else {
-
-                    $warna = "#c40010";
-
-                }
-
-                
-
-                return $warna;
-
+                $warna = "#c40010";
             }
+
+
+
+            return $warna;
+        }
 
         ?>
 
-        
+
 
         <div class="content-page">
 
             <div class="content">
 
-    
+
 
                 <!-- Start Content-->
 
@@ -278,9 +265,9 @@
 
                     <!-- end page title -->
 
-    
 
-    
+
+
 
                     <div class="row">
 
@@ -302,23 +289,18 @@
 
                                                     <?php
 
-                                                        echo '<option value="">-- choose school --</option>';
+                                                    echo '<option value="">-- choose school --</option>';
 
-                                                        while($row = $resultSchool->fetch_assoc()) 
+                                                    while ($row = $resultSchool->fetch_assoc()) {
 
-                                                        {
+                                                        if ($param_school == $row['SCHOOL']) {
 
-                                                            if($param_school == $row['SCHOOL']) {
+                                                            echo '<option selected value="' . $row['SCHOOL'] . '">' . $row['SCHOOL'] . '</option>';
+                                                        } else {
 
-                                                                echo '<option selected value="'.$row['SCHOOL'].'">'.$row['SCHOOL'].'</option>';
-
-                                                            } else {
-
-                                                                echo '<option value="'.$row['SCHOOL'].'">'.$row['SCHOOL'].'</option>';
-
-                                                            }
-
+                                                            echo '<option value="' . $row['SCHOOL'] . '">' . $row['SCHOOL'] . '</option>';
                                                         }
+                                                    }
 
                                                     ?>
 
@@ -348,19 +330,19 @@
 
                                         <div class="row mb-2">
 
-                                            <div class="col-md-2 offset-md-2">
-
+                                           
+                                            <div class="col-md-2 d-flex gap-2 offset-md-2">
                                                 <button class="btn btn-primary" type="submit">Search</button>
-
+                                                <a href="report.php" class="btn btn-secondary">Clear</a>
                                             </div>
 
                                             <div class="col-md-2">
 
-                                                <a href="report_pdf.php?<?php echo 'school='.$param_school.'&fromDate='.$from_date.'&toDate='.$to_date; ?>" class="btn btn-danger" target="_blank">
+                                                <a href="report_pdf.php?<?php echo 'school=' . $param_school . '&fromDate=' . $from_date . '&toDate=' . $to_date; ?>" class="btn btn-danger" target="_blank">
 
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="margin-right: 5px;">
 
-                                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
 
                                                     </svg>
 
@@ -372,11 +354,11 @@
 
                                         </div>
 
-                                        
+
 
                                     </form>
 
-                                    
+
 
                                     <table class="table table-bordered mb-0" width="100%">
 
@@ -392,71 +374,71 @@
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <circle cx="50" cy="50" r="40" fill="#FFE082"/>
-                                                        <path d="M30 45 L45 60 L70 35" stroke="#333" stroke-width="3" fill="none"/>
-                                                        <circle cx="35" cy="35" r="8" fill="#FF5722"/>
-                                                        <circle cx="65" cy="35" r="8" fill="#2196F3"/>
+                                                        <circle cx="50" cy="50" r="40" fill="#FFE082" />
+                                                        <path d="M30 45 L45 60 L70 35" stroke="#333" stroke-width="3" fill="none" />
+                                                        <circle cx="35" cy="35" r="8" fill="#FF5722" />
+                                                        <circle cx="65" cy="35" r="8" fill="#2196F3" />
                                                     </svg>
                                                     Critical Thinking
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <path d="M50 10 L20 25 L20 55 C20 75 50 90 50 90 C50 90 80 75 80 55 L80 25 Z" fill="#4CAF50" stroke="#333" stroke-width="2"/>
-                                                        <circle cx="65" cy="45" r="8" fill="#FF5722"/>
+                                                        <path d="M50 10 L20 25 L20 55 C20 75 50 90 50 90 C50 90 80 75 80 55 L80 25 Z" fill="#4CAF50" stroke="#333" stroke-width="2" />
+                                                        <circle cx="65" cy="45" r="8" fill="#FF5722" />
                                                     </svg>
                                                     Cyber Security Management
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <circle cx="50" cy="50" r="40" fill="#F44336"/>
-                                                        <path d="M30 30 L70 70 M70 30 L30 70" stroke="white" stroke-width="6"/>
-                                                        <rect x="60" y="20" width="15" height="25" rx="3" fill="#2196F3"/>
+                                                        <circle cx="50" cy="50" r="40" fill="#F44336" />
+                                                        <path d="M30 30 L70 70 M70 30 L30 70" stroke="white" stroke-width="6" />
+                                                        <rect x="60" y="20" width="15" height="25" rx="3" fill="#2196F3" />
                                                     </svg>
                                                     Cyberbullying
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <rect x="15" y="20" width="70" height="50" rx="5" fill="#E3F2FD" stroke="#1976D2" stroke-width="2"/>
-                                                        <circle cx="35" cy="40" r="8" fill="#FFB74D"/>
-                                                        <path d="M50 35 Q65 25 75 40 Q65 55 50 45" fill="#FF8A65"/>
+                                                        <rect x="15" y="20" width="70" height="50" rx="5" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" />
+                                                        <circle cx="35" cy="40" r="8" fill="#FFB74D" />
+                                                        <path d="M50 35 Q65 25 75 40 Q65 55 50 45" fill="#FF8A65" />
                                                     </svg>
                                                     Digital Citizen Identity
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <path d="M30 40 Q30 25 50 25 Q70 25 70 40 Q70 55 50 70 Q30 55 30 40 Z" fill="#E91E63"/>
-                                                        <path d="M45 30 Q45 20 55 20 Q65 20 65 30 Q65 40 55 50 Q45 40 45 30 Z" fill="#2196F3"/>
+                                                        <path d="M30 40 Q30 25 50 25 Q70 25 70 40 Q70 55 50 70 Q30 55 30 40 Z" fill="#E91E63" />
+                                                        <path d="M45 30 Q45 20 55 20 Q65 20 65 30 Q65 40 55 50 Q45 40 45 30 Z" fill="#2196F3" />
                                                     </svg>
                                                     Digital Empathy
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <circle cx="50" cy="50" r="30" fill="#81C784"/>
-                                                        <path d="M40 35 L60 35 L70 50 L60 65 L40 65 L30 50 Z" fill="none" stroke="#333" stroke-width="2"/>
-                                                        <path d="M50 20 Q60 30 70 40 Q60 50 50 60 Q40 50 30 40 Q40 30 50 20" fill="#FF5722"/>
+                                                        <circle cx="50" cy="50" r="30" fill="#81C784" />
+                                                        <path d="M40 35 L60 35 L70 50 L60 65 L40 65 L30 50 Z" fill="none" stroke="#333" stroke-width="2" />
+                                                        <path d="M50 20 Q60 30 70 40 Q60 50 50 60 Q40 50 30 40 Q40 30 50 20" fill="#FF5722" />
                                                     </svg>
                                                     Digital Footprint
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <rect x="20" y="30" width="60" height="40" rx="5" fill="#E1F5FE" stroke="#0277BD" stroke-width="2"/>
-                                                        <circle cx="50" cy="50" r="4" fill="#0277BD"/>
-                                                        <path d="M30 45 L40 45 M60 45 L70 45 M30 55 L45 55 M55 55 L70 55" stroke="#0277BD" stroke-width="2"/>
+                                                        <rect x="20" y="30" width="60" height="40" rx="5" fill="#E1F5FE" stroke="#0277BD" stroke-width="2" />
+                                                        <circle cx="50" cy="50" r="4" fill="#0277BD" />
+                                                        <path d="M30 45 L40 45 M60 45 L70 45 M30 55 L45 55 M55 55 L70 55" stroke="#0277BD" stroke-width="2" />
                                                     </svg>
                                                     Privacy Management
                                                 </th>
 
                                                 <th class="align-middle" width="8%">
                                                     <svg width="20" height="20" viewBox="0 0 100 100" class="svg-icon">
-                                                        <circle cx="50" cy="50" r="35" fill="#E3F2FD" stroke="#1976D2" stroke-width="3"/>
-                                                        <path d="M50 20 L50 50 L70 60" stroke="#1976D2" stroke-width="3" fill="none"/>
-                                                        <circle cx="50" cy="50" r="3" fill="#1976D2"/>
+                                                        <circle cx="50" cy="50" r="35" fill="#E3F2FD" stroke="#1976D2" stroke-width="3" />
+                                                        <path d="M50 20 L50 50 L70 60" stroke="#1976D2" stroke-width="3" fill="none" />
+                                                        <circle cx="50" cy="50" r="3" fill="#1976D2" />
                                                     </svg>
                                                     Screen Time
                                                 </th>
@@ -468,8 +450,7 @@
                                         <tbody>
 
                                             <?php
-                                            while($row = $result->fetch_assoc()) 
-                                            {
+                                            while ($row = $result->fetch_assoc()) {
                                                 $critical_thinking = $row['critical_thinking'] / $row['COUNT_OF_STUDENT'];
 
                                                 $cyber_security_management = $row['cyber_security_management'] / $row['COUNT_OF_STUDENT'];
@@ -486,29 +467,25 @@
 
                                                 $screen_time = $row['screen_time'] / $row['COUNT_OF_STUDENT'];
 
-                                                
+
 
                                                 $critical_thinking_color = "";
 
-                                                if($critical_thinking > 115) {
+                                                if ($critical_thinking > 115) {
 
                                                     $critical_thinking_color = "#260e83";
-
-                                                } elseif($critical_thinking >= 100) {
+                                                } elseif ($critical_thinking >= 100) {
 
                                                     $critical_thinking_color = "#f58a0a";
-
-                                                } elseif($critical_thinking >= 85) {
+                                                } elseif ($critical_thinking >= 85) {
 
                                                     $critical_thinking_color = "#ed2207";
-
                                                 } else {
 
                                                     $critical_thinking_color = "#c40010";
-
                                                 }
 
-                                                
+
 
                                                 $critical_thinking = round($critical_thinking, 0) * 1;
 
@@ -526,7 +503,7 @@
 
                                                 $screen_time = round($screen_time, 0) * 1;
 
-                                                
+
 
                                                 $critical_thinking_color = getBgColor($critical_thinking);
 
@@ -544,34 +521,33 @@
 
                                                 $screen_time_color = getBgColor($screen_time);
 
-                                                
+
 
                                                 echo '<tr>';
-                                                
-                                                echo '<td style="vertical-align: middle;">'.$row['SCHOOL'].'</td>';
-                                                
-                                                echo '<td style="vertical-align: middle;">'.$row['GRADE'].'</td>';
 
-                                                echo '<td style="vertical-align: middle;">'.$row['COUNT_OF_STUDENT'].'</td>';
+                                                echo '<td style="vertical-align: middle;">' . $row['SCHOOL'] . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$critical_thinking_color.';" class="text-end text-white">'.$critical_thinking.'</td>';
+                                                echo '<td style="vertical-align: middle;">' . $row['GRADE'] . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$cyber_security_management_color.';" class="text-end text-white">'.$cyber_security_management.'</td>';
+                                                echo '<td style="vertical-align: middle;">' . $row['COUNT_OF_STUDENT'] . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$cyberbullying_color.';" class="text-end text-white">'.$cyberbullying.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $critical_thinking_color . ';" class="text-end text-white">' . $critical_thinking . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$digital_citizen_identity_color.';" class="text-end text-white">'.$digital_citizen_identity.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $cyber_security_management_color . ';" class="text-end text-white">' . $cyber_security_management . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$digital_empathy_color.';" class="text-end text-white">'.$digital_empathy.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $cyberbullying_color . ';" class="text-end text-white">' . $cyberbullying . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$digital_footprint_color.';" class="text-end text-white">'.$digital_footprint.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $digital_citizen_identity_color . ';" class="text-end text-white">' . $digital_citizen_identity . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$privacy_management_color.';" class="text-end text-white">'.$privacy_management.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $digital_empathy_color . ';" class="text-end text-white">' . $digital_empathy . '</td>';
 
-                                                echo '<td style="vertical-align: middle; background-color: '.$screen_time_color.';" class="text-end text-white">'.$screen_time.'</td>';
+                                                echo '<td style="vertical-align: middle; background-color: ' . $digital_footprint_color . ';" class="text-end text-white">' . $digital_footprint . '</td>';
+
+                                                echo '<td style="vertical-align: middle; background-color: ' . $privacy_management_color . ';" class="text-end text-white">' . $privacy_management . '</td>';
+
+                                                echo '<td style="vertical-align: middle; background-color: ' . $screen_time_color . ';" class="text-end text-white">' . $screen_time . '</td>';
 
                                                 echo '</tr>';
-
                                             }
 
                                             ?>
@@ -596,7 +572,7 @@
 
     </div>
 
-    
+
 
     <!-- Vendor js -->
 

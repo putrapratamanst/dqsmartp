@@ -1,0 +1,3 @@
+db nya
+nyalakan laragon dan mysqlnya
+matikan semua docker dan service mysqpl

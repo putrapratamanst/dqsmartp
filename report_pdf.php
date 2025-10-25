@@ -1,4 +1,7 @@
 <?php
+// Start output buffering to prevent "headers already sent" error
+ob_start();
+
 require_once 'dompdf/autoload.inc.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -25,6 +28,14 @@ if (isset($_GET['toDate'])) {
 // Jika ada parameter school, fokus ke sekolah tersebut
 // Jika tidak ada, ambil semua sekolah
 $schools_to_process = [];
+
+// Convert logo to base64 for PDF
+$logo_path = 'img/logo.png';
+$logo_base64 = '';
+if (file_exists($logo_path)) {
+    $logo_data = file_get_contents($logo_path);
+    $logo_base64 = 'data:image/png;base64,' . base64_encode($logo_data);
+}
 
 if($param_school != "") {
     $schools_to_process[] = $param_school;
@@ -114,14 +125,15 @@ $html = '
             font-family: Arial, sans-serif; 
             margin: 0;
             padding: 0;
-            background: #4a5ebc;
+            background: #2B4A8C;
             color: white;
         }
         
         .header {
-            background: #4a5ebc;
-            padding: 30px;
+            background: linear-gradient(135deg, #2B4A8C 0%, #3D5FA9 100%);
+            padding: 15px 10px;
             width: 100%;
+            box-sizing: border-box;
         }
         
         .header-table {
@@ -131,34 +143,62 @@ $html = '
         
         .header-table td {
             vertical-align: middle;
-            padding: 10px;
+            padding: 5px 3px;
             border: none;
         }
         
         .logo-cell {
-            width: 25%;
+            width: 23%;
             text-align: left;
+            padding-left: 5px;
         }
         
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: #00bcd4;
-            border-radius: 8px;
+        .logo-container {
             display: inline-block;
-            margin-right: 10px;
+            vertical-align: middle;
             text-align: center;
-            line-height: 50px;
-            color: white;
-            font-weight: bold;
+        }
+        
+        .logo-icon {
+            width: 80px;
+            height: 58px;
+            display: block;
+            position: relative;
+            margin: 0 auto 3px auto;
+        }
+        
+        .logo-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
         }
         
         .logo-text {
-            display: inline-block;
-            vertical-align: top;
+            display: block;
             color: white;
-            font-size: 12px;
-            line-height: 1.2;
+            line-height: 1.3;
+            text-align: center;
+        }
+        
+        .logo-text .brand {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text .tagline {
+            font-size: 9px;
+            display: block;
+            opacity: 0.9;
         }
         
         .title-cell {
@@ -167,33 +207,42 @@ $html = '
         }
         
         .main-title {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: bold;
             margin: 0;
             letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+            line-height: 1;
         }
         
         .subtitle {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            margin: 5px 0 0 0;
-            letter-spacing: 1px;
+            margin: 2px 0 0 0;
+            letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+            line-height: 1;
         }
         
         .hashtag-cell {
-            width: 25%;
-            text-align: right;
+            width: 27%;
         }
         
         .hashtag {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
-            margin: 0;
+            margin: 0 0 3px 0;
+            color: white;
         }
         
         .school-name {
-            font-size: 14px;
-            margin: 5px 0 0 0;
+            font-size: 10px;
+            margin: 0;
+            color: white;
+            font-weight: normal;
+            line-height: 1.3;
         }
         
         .content {
@@ -205,8 +254,7 @@ $html = '
         .table-header {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 1px solid #000000;
         }
         
         .table-header td {
@@ -240,7 +288,7 @@ $html = '
         .data-table td {
             padding: 12px 10px;
             vertical-align: middle;
-            border: none;
+            border-bottom: 1px solid #000000;
         }
         
         .grade-cell {
@@ -248,6 +296,7 @@ $html = '
             color: #333;
             font-size: 20px;
             font-weight: bold;
+            text-align: center;
         }
         
         .score-cell {
@@ -346,10 +395,11 @@ foreach ($schools_to_process as $index => $school) {
             <table class="header-table">
                 <tr>
                     <td class="logo-cell">
-                        <div class="logo">DQ</div>
-                        <div class="logo-text">
-                            <strong>DQ smart +</strong><br>
-                            digital technology for all
+                        <div class="logo-container">
+                        <img src="' . $logo_base64 . '" class="logo-icon" alt="DQ smart +">
+                            <div class="logo-text">
+                                <span class="tagline">digital technology for all</span>
+                            </div>
                         </div>
                     </td>
                     <td class="title-cell">
@@ -503,7 +553,7 @@ foreach ($schools_to_process as $index => $school) {
 $html .= '
 </body>
 </html>';
-
+// die($html);
 // Configure Dompdf
 $options = new Options();
 $options->set('defaultFont', 'Arial');
@@ -516,359 +566,11 @@ $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
-// Output PDF
-$schoolName = $param_school ? str_replace(' ', '_', $param_school) : 'All_Schools';
-$filename = 'DQ_Smartplus_School_Report_Summary_' . $schoolName . '_' . date('Ymd_His') . '.pdf';
-$dompdf->stream($filename, array('Attachment' => true));
-?>
-        }
-        
-        .main-title {
-            font-size: 42px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-        }
-        
-        .subtitle {
-            font-size: 28px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        
-        .hashtag-section {
-            text-align: right;
-            color: white;
-        }
-        
-        .hashtag {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        
-        .school-name {
-            font-size: 16px;
-        }
-        
-        .content {
-            background: white;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .table-container {
-            padding: 40px 50px;
-        }
-        
-        .table-header {
-            display: flex;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 3px solid #e0e0e0;
-            margin-bottom: 30px;
-        }
-        
-        .grade-header {
-            width: 120px;
-            color: #3f4fbf;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .category-columns {
-            display: flex;
-            flex: 1;
-            gap: 20px;
-        }
-        
-        .category-header {
-            flex: 1;
-            text-align: center;
-            color: #3f4fbf;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .category-icon {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .grade-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .grade-label {
-            width: 120px;
-            color: #333;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .score-columns {
-            display: flex;
-            flex: 1;
-            gap: 20px;
-        }
-        
-        .score-pill {
-            flex: 1;
-            text-align: center;
-            padding: 15px 0;
-            border-radius: 25px;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        .score-65 { background: #c62828; }
-        .score-60 { background: #c62828; }
-        .score-80 { background: #c62828; }
-        .score-90 { background: #c62828; }
-        .score-100 { background: #ff8f00; }
-        .score-105 { background: #ff8f00; }
-        .score-110 { background: #ff8f00; }
-        .score-113 { background: #ff8f00; }
-        .score-115 { background: #ff8f00; }
-        .score-116 { background: #1565c0; }
-        .score-117 { background: #1565c0; }
-        .score-118 { background: #1565c0; }
-        .score-120 { background: #1565c0; }
-        .score-121 { background: #1565c0; }
-        .score-125 { background: #1565c0; }
-        .score-128 { background: #1565c0; }
-        .score-130 { background: #1565c0; }
-        
-        .legend-section {
-            background: white;
-            padding: 40px 50px;
-            border-top: 3px solid #e0e0e0;
-        }
-        
-        .legend-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-        
-        .legend-color {
-            min-width: 180px;
-            height: 60px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 11px;
-            text-align: center;
-            line-height: 1.2;
-        }
-        
-        .legend-excellent { background: #673ab7; }
-        .legend-satisfactory { background: #ff8f00; }
-        .legend-less { background: #e53935; }
-        .legend-require { background: #c62828; }
-        
-        .legend-text {
-            color: #333;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        
-        .footer {
-            background: white;
-            text-align: right;
-            padding: 20px 50px;
-            color: #3f4fbf;
-            font-weight: bold;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>';
-
-// Process each school
-foreach ($schools_to_process as $index => $school) {
-    if ($index > 0) {
-        $html .= '<div style="page-break-before: always;"></div>';
-    }
-    
-    $schoolResult = getSchoolData($conn, $school, $from_date, $to_date);
-    
-    if ($schoolResult->num_rows > 0) {
-        $schoolData = [];
-        while($row = $schoolResult->fetch_assoc()) {
-            $schoolData[] = $row;
-        }
-        
-        $html .= '
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo">
-                    <div class="logo-center"></div>
-                    <div class="logo-dots"></div>
-                </div>
-                <div class="logo-text">
-                    <strong>DQ smart +</strong><br>
-                    <small>digital technology for all</small>
-                </div>
-            </div>
-            <div class="title-section">
-                <div class="main-title">SCHOOL REPORT</div>
-                <div class="subtitle">SUMMARY</div>
-            </div>
-            <div class="hashtag-section">
-                <div class="hashtag">#DQEveryOne</div>
-                <div class="school-name">School Name: ' . $school . '</div>
-            </div>
-        </div>
-        
-        <div class="content">
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="grade-header">Grade</div>
-                    <div class="category-columns">
-                        <div class="category-header">
-                            <svg class="category-icon" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="#2196f3"/>
-                                <path d="M30 30 L40 40 M60 40 L70 30 M40 60 L60 60" stroke="white" stroke-width="3"/>
-                                <circle cx="50" cy="50" r="8" fill="white"/>
-                            </svg>
-                            Screen Time<br>Management
-                        </div>
-                        <div class="category-header">
-                            <svg class="category-icon" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="#ff5722"/>
-                                <path d="M35 35 L35 45 L45 45 L45 35 M55 35 L55 45 L65 45 L65 35 M35 55 L45 55 M55 55 L65 55" stroke="white" stroke-width="3"/>
-                                <circle cx="50" cy="50" r="5" fill="white"/>
-                            </svg>
-                            Privacy<br>Management
-                        </div>
-                        <div class="category-header">
-                            <svg class="category-icon" viewBox="0 0 100 100">
-                                <rect x="20" y="30" width="60" height="40" fill="#2196f3" rx="5"/>
-                                <rect x="25" y="35" width="50" height="30" fill="white" rx="3"/>
-                                <circle cx="40" cy="45" r="3" fill="#2196f3"/>
-                                <rect x="50" y="42" width="20" height="2" fill="#2196f3"/>
-                                <rect x="50" y="47" width="15" height="2" fill="#2196f3"/>
-                            </svg>
-                            Cyber Security<br>Management
-                        </div>
-                        <div class="category-header">
-                            <svg class="category-icon" viewBox="0 0 100 100">
-                                <rect x="20" y="25" width="60" height="50" fill="#424242" rx="5"/>
-                                <rect x="25" y="30" width="50" height="40" fill="white" rx="3"/>
-                                <circle cx="40" cy="45" r="5" fill="#ffc107"/>
-                                <path d="M55 40 Q65 35 70 45 Q65 55 55 50" fill="#ff9800"/>
-                            </svg>
-                            Digital Citizen<br>Identity
-                        </div>
-                    </div>
-                </div>';
-        
-        // Data rows berdasarkan contoh PDF
-        $sampleData = [
-            ['grade' => '10.A', 'screen_time' => 65, 'privacy' => 110, 'cyber_security' => 116, 'digital_citizen' => 85],
-            ['grade' => '10.B', 'screen_time' => 60, 'privacy' => 100, 'cyber_security' => 110, 'digital_citizen' => 116],
-            ['grade' => '10.C', 'screen_time' => 100, 'privacy' => 120, 'cyber_security' => 113, 'digital_citizen' => 105],
-            ['grade' => '11.A', 'screen_time' => 80, 'privacy' => 130, 'cyber_security' => 118, 'digital_citizen' => 115],
-            ['grade' => '11.B', 'screen_time' => 90, 'privacy' => 115, 'cyber_security' => 105, 'digital_citizen' => 110],
-            ['grade' => '11.C', 'screen_time' => 115, 'privacy' => 120, 'cyber_security' => 128, 'digital_citizen' => 125],
-            ['grade' => '12', 'screen_time' => 105, 'privacy' => 117, 'cyber_security' => 130, 'digital_citizen' => 121]
-        ];
-        
-        foreach($sampleData as $data) {
-            $html .= '
-                <div class="grade-row">
-                    <div class="grade-label">' . $data['grade'] . '</div>
-                    <div class="score-columns">
-                        <div class="score-pill score-' . $data['screen_time'] . '">' . $data['screen_time'] . '</div>
-                        <div class="score-pill score-' . $data['privacy'] . '">' . $data['privacy'] . '</div>
-                        <div class="score-pill score-' . $data['cyber_security'] . '">' . $data['cyber_security'] . '</div>
-                        <div class="score-pill score-' . $data['digital_citizen'] . '">' . $data['digital_citizen'] . '</div>
-                    </div>
-                </div>';
-        }
-        
-        $html .= '
-            </div>
-            
-            <div class="legend-section">
-                <div class="legend-grid">
-                    <div class="legend-item">
-                        <div class="legend-color legend-excellent">
-                            EXCELLENT<br>SCORE > 115
-                        </div>
-                        <div class="legend-text">
-                            You are able to independently use Digital and Social Media tools ethically and responsibly in DQ Skills, you can increase the use of digital positively and creatively.
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color legend-satisfactory">
-                            SATISFACTORY<br>SCORE 100 - 115
-                        </div>
-                        <div class="legend-text">
-                            You have an above average score in ethics and use smart devices and social media responsibly on DQ Skill, but it is recommended to be wiser in using digital media.
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color legend-less">
-                            LESS THAN<br>SATISFACTORY<br>SCORE 85 - 99
-                        </div>
-                        <div class="legend-text">
-                            You have to be more careful in the use of social media and smart devices, you need to increase your awareness in dealing with digital flows.
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color legend-require">
-                            REQUIRE ATTENTION<br>SCORE < 85
-                        </div>
-                        <div class="legend-text">
-                            It is highly recommended that you communicate openly with parents or educators who are more competent about digital life and exposure to risks in cyberspace.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer">
-                dq-Smartplus
-            </div>
-        </div>';
-    }
-}
-
-$html .= '
-</body>
-</html>';
-
-// Configure Dompdf
-$options = new Options();
-$options->set('defaultFont', 'Arial');
-$options->set('isHtml5ParserEnabled', true);
-$options->set('isPhpEnabled', true);
-
-$dompdf = new Dompdf($options);
-$dompdf->loadHtml($html);
-$dompdf->setPaper('A4', 'landscape');
-$dompdf->render();
+// Clear output buffer to prevent "headers already sent" error
+ob_end_clean();
 
 // Output PDF
 $schoolName = $param_school ? str_replace(' ', '_', $param_school) : 'All_Schools';
 $filename = 'DQ_Smartplus_School_Report_Summary_' . $schoolName . '_' . date('Ymd_His') . '.pdf';
 $dompdf->stream($filename, array('Attachment' => true));
-?>
+exit();
