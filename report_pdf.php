@@ -39,36 +39,53 @@ if (file_exists($logo_path)) {
 function getSchoolData($conn, $school, $from_date, $to_date)
 {
     $sql = "
-        SELECT
-            A.SCHOOL,
-            IFNULL(A.GRADE, 'Tidak Ada Kelas') AS GRADE,
-            (SELECT COUNT(ID) FROM account AS a1 WHERE a1.SCHOOL = A.SCHOOL AND a1.STATE = 'FINISH' AND a1.GRADE = A.GRADE) AS COUNT_OF_STUDENT,
-            SUM(CASE WHEN Q.TIPE = 'Critical Thinking' THEN R.VALUE ELSE 0 END) AS 'critical_thinking',
-            SUM(CASE WHEN Q.TIPE = 'Cyber Security Management' THEN R.VALUE ELSE 0 END) AS 'cyber_security_management',
-            SUM(CASE WHEN Q.TIPE = 'Cyberbullying' THEN R.VALUE ELSE 0 END) AS 'cyberbullying',
-            SUM(CASE WHEN Q.TIPE = 'Digital Citizen Identity' THEN R.VALUE ELSE 0 END) AS 'digital_citizen_identity',
-            SUM(CASE WHEN Q.TIPE = 'Digital Empathy' THEN R.VALUE ELSE 0 END) AS 'digital_empathy',
-            SUM(CASE WHEN Q.TIPE = 'Digital Footprint' THEN R.VALUE ELSE 0 END) AS 'digital_footprint',
-            SUM(CASE WHEN Q.TIPE = 'Privacy Management' THEN R.VALUE ELSE 0 END) AS 'privacy_management',
-            SUM(CASE WHEN Q.TIPE = 'Screen Time' THEN R.VALUE ELSE 0 END) AS 'screen_time'
-        FROM
-            RESULT AS R
-            LEFT JOIN QUESTION AS Q ON Q.ID = R.QUESTION
-            LEFT JOIN CATEGORY AS C ON C.KATEGORI = Q.TIPE
-            LEFT JOIN account AS A ON A.ID = R.USERID
-        WHERE
-            A.STATE = 'FINISH' 
-            AND A.SCHOOL = '$school'";
+SELECT 
+    A.SCHOOL,
+    IFNULL(A.GRADE, 'Tidak Ada Kelas') AS GRADE,
+    COUNT(DISTINCT A.ID) AS COUNT_OF_STUDENT,
 
-    if ($from_date != "") {
-        $sql .= " AND R.ACTIVITY_ON >= '" . $from_date . " 00:00:00'";
-    }
+    AVG(U.critical_thinking) AS critical_thinking,
+    AVG(U.cyber_security_management) AS cyber_security_management,
+    AVG(U.cyberbullying) AS cyberbullying,
+    AVG(U.digital_citizen_identity) AS digital_citizen_identity,
+    AVG(U.digital_empathy) AS digital_empathy,
+    AVG(U.digital_footprint) AS digital_footprint,
+    AVG(U.privacy_management) AS privacy_management,
+    AVG(U.screen_time) AS screen_time
 
-    if ($to_date != "") {
-        $sql .= " AND R.ACTIVITY_ON <= '" . $to_date . " 23:59:00'";
-    }
+FROM account A
+LEFT JOIN (
+    SELECT 
+        R.USERID,
+        AVG(CASE WHEN Q.TIPE = 'Critical Thinking' THEN R.VALUE END) AS critical_thinking,
+        AVG(CASE WHEN Q.TIPE = 'Cyber Security Management' THEN R.VALUE END) AS cyber_security_management,
+        AVG(CASE WHEN Q.TIPE = 'Cyberbullying' THEN R.VALUE END) AS cyberbullying,
+        AVG(CASE WHEN Q.TIPE = 'Digital Citizen Identity' THEN R.VALUE END) AS digital_citizen_identity,
+        AVG(CASE WHEN Q.TIPE = 'Digital Empathy' THEN R.VALUE END) AS digital_empathy,
+        AVG(CASE WHEN Q.TIPE = 'Digital Footprint' THEN R.VALUE END) AS digital_footprint,
+        AVG(CASE WHEN Q.TIPE = 'Privacy Management' THEN R.VALUE END) AS privacy_management,
+        AVG(CASE WHEN Q.TIPE = 'Screen Time' THEN R.VALUE END) AS screen_time
+    FROM RESULT R
+    LEFT JOIN QUESTION Q ON Q.ID = R.QUESTION
+    WHERE 1=1
+";
 
-    $sql .= " GROUP BY A.SCHOOL, A.GRADE ORDER BY A.GRADE";
+if ($from_date != "") {
+    $sql .= " AND R.ACTIVITY_ON >= '" . $from_date . " 00:00:00'";
+}
+
+if ($to_date != "") {
+    $sql .= " AND R.ACTIVITY_ON <= '" . $to_date . " 23:59:59'";
+}
+
+$sql .= "
+    GROUP BY R.USERID
+) AS U ON U.USERID = A.ID
+
+WHERE A.STATE = 'FINISH'
+  AND A.SCHOOL = '$school'
+GROUP BY A.SCHOOL, A.GRADE
+";
     return $conn->query($sql);
 }
 
@@ -101,7 +118,6 @@ function getSchoolAverageData($conn, $school, $from_date, $to_date)
     if ($to_date != "") {
         $sql .= " AND R.ACTIVITY_ON <= '" . $to_date . " 23:59:00'";
     }
-
     return $conn->query($sql);
 }
 function getBgColor($nilai)
