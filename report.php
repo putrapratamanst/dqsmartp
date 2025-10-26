@@ -338,7 +338,10 @@
 
                                             <div class="col-md-2">
 
-                                                <a href="report_pdf.php?<?php echo 'school=' . $param_school . '&fromDate=' . $from_date . '&toDate=' . $to_date; ?>" class="btn btn-danger" target="_blank">
+                                                <a href="report_pdf.php?<?php echo 'school=' . $param_school . '&fromDate=' . $from_date . '&toDate=' . $to_date; ?>" 
+                                                   class="btn btn-danger <?php echo empty($param_school) ? 'disabled' : ''; ?>" 
+                                                   target="_blank"
+                                                   <?php echo empty($param_school) ? 'onclick="return false;"' : ''; ?>>
 
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="margin-right: 5px;">
 
