@@ -142,6 +142,11 @@ $html = '
     <meta charset="utf-8">
     <title>DQ Smartplus School Report Summary</title>
     <style>
+        @page {
+            margin-top: 120px;
+            margin-bottom: 50px;
+        }
+        
         body { 
             font-family: Arial, sans-serif; 
             margin: 0;
@@ -150,6 +155,10 @@ $html = '
         }
         
         .header {
+            position: fixed;
+            top: -110px;
+            left: 0;
+            right: 0;
             background: #2B4A8C;
             // background: linear-gradient(135deg, #2B4A8C 0%, #3D5FA9 100%);
             padding: 15px 10px;
@@ -270,7 +279,7 @@ $html = '
         .content {
             background: white;
             margin: 0;
-            padding: 30px;
+            padding: 15px 30px;
         }
         
         .table-header {
@@ -417,16 +426,17 @@ $html = '
         }
         
         .footer {
+            position: fixed;
+            bottom: -50px;
+            left: 0;
+            right: 0;
             background: white;
             text-align: right;
             padding: 20px 30px;
             color: #4a5ebc;
             font-weight: bold;
             font-size: 12px;
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: auto;
+            height: 50px;
         }
         
         .icon {
