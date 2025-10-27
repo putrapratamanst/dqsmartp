@@ -53,11 +53,7 @@
                         <?php echo $lang=="id"?"Isi semua kolom di bawah
 ":"Fill all the field in the bottom"; ?>
                     </div>
-                    <form name="form" action="prog_regis.php" method="GET">
-                        <div class="md-form-group">
-                            <input id="username" name="username" type="text" class="md-input" required />
-                            <label><?php echo $lang=="id"?"Nama Pengguna":"Username"; ?></label>
-                        </div>
+                    <form name="form" action="prog_regis.php" method="GET" onsubmit="copyEmailToUsername()">
                         <div class="md-form-group">
                             <input id="email" name="email" type="email" class="md-input" required />
                             <label>Email</label>
@@ -96,6 +92,7 @@
                             <input id="voucher" name="voucher" type="text" class="md-input" />
                             <label>Voucher</label>
                         </div>
+                        <input type="hidden" id="username" name="username" />
                         <button type="submit" class="btn primary btn-block p-x-md"><?php echo $lang=="id"?"Daftar":"Sign up"; ?></button>
                     </form>
                 </div>
@@ -155,6 +152,11 @@
                     $('#errmsg').html('<div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">' + sukses + '</div>');
                 }
             }
+            function copyEmailToUsername() {
+                    var email = $('#email').val();
+                    $('#username').val(email);
+                    console.log(email);
+                }
         </script>
         <!-- build:js scripts/app.html.js -->
         <!-- jQuery -->
