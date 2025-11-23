@@ -91,14 +91,16 @@
         include 'program/koneksi.php';
 
 
-
         $sqlSchool = "SELECT DISTINCT SCHOOL FROM `account` WHERE STATE ='FINISH' ORDER BY SCHOOL";
 
         $resultSchool = $conn->query($sqlSchool);
 
 
-
         $param_school = isset($_GET['school']) ? $_GET['school'] : "";
+        if ($param_school !== "") {
+            // Escape di sini
+            $param_school = $conn->real_escape_string($param_school);
+        }
 
         $from_date = date("Y-m-d", strtotime("-6 months"));
 
@@ -206,7 +208,6 @@
             ";
 
         $result = $conn->query($sql);
-
 
 
         function getBgColor($nilai)
@@ -586,6 +587,9 @@
     <!-- App js -->
 
     <script src="assets/js/app.min.js"></script>
+    <script>
+console.log("JS Loaded!");
+</script>
 
 </body>
 
