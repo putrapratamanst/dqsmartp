@@ -69,6 +69,7 @@ function getSchoolData($conn, $school, $from_date, $to_date)
     }
 
     $sql .= " GROUP BY A.SCHOOL, A.GRADE ORDER BY A.GRADE";
+
     return $conn->query($sql);
 }
 
@@ -77,46 +78,58 @@ function getSchoolAverageData($conn, $school, $from_date, $to_date)
 {
     $sql = "
         SELECT
-            AVG(CASE WHEN Q.TIPE = 'Critical Thinking' THEN R.VALUE ELSE NULL END) AS 'critical_thinking',
-            AVG(CASE WHEN Q.TIPE = 'Cyber Security Management' THEN R.VALUE ELSE NULL END) AS 'cyber_security_management',
-            AVG(CASE WHEN Q.TIPE = 'Cyberbullying' THEN R.VALUE ELSE NULL END) AS 'cyberbullying',
-            AVG(CASE WHEN Q.TIPE = 'Digital Citizen Identity' THEN R.VALUE ELSE NULL END) AS 'digital_citizen_identity',
-            AVG(CASE WHEN Q.TIPE = 'Digital Empathy' THEN R.VALUE ELSE NULL END) AS 'digital_empathy',
-            AVG(CASE WHEN Q.TIPE = 'Digital Footprint' THEN R.VALUE ELSE NULL END) AS 'digital_footprint',
-            AVG(CASE WHEN Q.TIPE = 'Privacy Management' THEN R.VALUE ELSE NULL END) AS 'privacy_management',
-            AVG(CASE WHEN Q.TIPE = 'Screen Time' THEN R.VALUE ELSE NULL END) AS 'screen_time'
-        FROM
-            RESULT AS R
-            LEFT JOIN QUESTION AS Q ON Q.ID = R.QUESTION
-            LEFT JOIN CATEGORY AS C ON C.KATEGORI = Q.TIPE
-            LEFT JOIN account AS A ON A.ID = R.USERID
-        WHERE
-            A.STATE = 'FINISH' 
-            AND A.SCHOOL = '$school'";
-
+            AVG(t.critical_thinking) AS critical_thinking,
+            AVG(t.cyber_security_management) AS cyber_security_management,
+            AVG(t.cyberbullying) AS cyberbullying,
+            AVG(t.digital_citizen_identity) AS digital_citizen_identity,
+            AVG(t.digital_empathy) AS digital_empathy,
+            AVG(t.digital_footprint) AS digital_footprint,
+            AVG(t.privacy_management) AS privacy_management,
+            AVG(t.screen_time) AS screen_time
+        FROM (
+            SELECT
+                A.ID AS USERID,
+                SUM(CASE WHEN Q.TIPE = 'Critical Thinking' THEN R.VALUE ELSE 0 END) AS critical_thinking,
+                SUM(CASE WHEN Q.TIPE = 'Cyber Security Management' THEN R.VALUE ELSE 0 END) AS cyber_security_management,
+                SUM(CASE WHEN Q.TIPE = 'Cyberbullying' THEN R.VALUE ELSE 0 END) AS cyberbullying,
+                SUM(CASE WHEN Q.TIPE = 'Digital Citizen Identity' THEN R.VALUE ELSE 0 END) AS digital_citizen_identity,
+                SUM(CASE WHEN Q.TIPE = 'Digital Empathy' THEN R.VALUE ELSE 0 END) AS digital_empathy,
+                SUM(CASE WHEN Q.TIPE = 'Digital Footprint' THEN R.VALUE ELSE 0 END) AS digital_footprint,
+                SUM(CASE WHEN Q.TIPE = 'Privacy Management' THEN R.VALUE ELSE 0 END) AS privacy_management,
+                SUM(CASE WHEN Q.TIPE = 'Screen Time' THEN R.VALUE ELSE 0 END) AS screen_time
+            FROM
+                RESULT AS R
+                LEFT JOIN QUESTION AS Q ON Q.ID = R.QUESTION
+                LEFT JOIN CATEGORY AS C ON C.KATEGORI = Q.TIPE
+                LEFT JOIN account AS A ON A.ID = R.USERID
+            WHERE
+                A.STATE = 'FINISH'
+                AND A.SCHOOL = '$school'";
     if ($from_date != "") {
         $sql .= " AND R.ACTIVITY_ON >= '" . $from_date . " 00:00:00'";
     }
-
     if ($to_date != "") {
         $sql .= " AND R.ACTIVITY_ON <= '" . $to_date . " 23:59:00'";
     }
+    $sql .= " GROUP BY A.ID
+        ) t";
     return $conn->query($sql);
 }
-function getBgColor($nilai)
+function getScoreClass($nilai)
 {
     $warna = "";
     if ($nilai > 115) {
-        $warna = "#260e83";
+        $warna = "score-blue";
     } elseif ($nilai >= 100) {
-        $warna = "#f58a0a";
+        $warna = "score-orange";
     } elseif ($nilai >= 85) {
-        $warna = "#ed2207";
+        $warna = "score-red";
     } else {
-        $warna = "#c40010";
+        $warna = "score-red-dark";
     }
     return $warna;
 }
+
 
 function getIconSvg($type)
 {
@@ -383,9 +396,10 @@ $html = '
             width: 20%;
         }
         
-        .score-red { background: #c62828; }
-        .score-orange { background: #ff8f00; }
-        .score-blue { background: #1565c0; }
+        .score-red-dark { background: #c40010; }
+        .score-red { background: #ed2207; }
+        .score-orange { background: #f58a0a; }
+        .score-blue { background: #260e83; }
         
         .legend-section {
             background: white;
@@ -449,11 +463,7 @@ $html = '
     </style>
 </head>
 <body>';
-function getScoreClass($score) {
-    if($score < 85) return "score-red";
-    elseif($score < 116) return "score-orange";
-    else return "score-blue";
-}
+
 // Get school data
 $schoolResult = getSchoolData($conn, $param_school, $from_date, $to_date);
 
@@ -717,7 +727,6 @@ $html .= '
         <table class="data-table">';
         $schoolResultAvg = getSchoolAverageData($conn, $param_school, $from_date, $to_date);
         $dataAvg = $schoolResultAvg->fetch_assoc();
-        
         if ($dataAvg) {
             $html .= '
                 <tr>
