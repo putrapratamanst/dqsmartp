@@ -96,6 +96,10 @@
                             <input type="password" class="md-input" ng-model="user.password" name="password" id="password" required />
                             <label><?php echo $lang=="id"?"Kata sandi":"Password"; ?></label>
                         </div>
+                        <div class="md-form-group float-label">
+                            <input type="text" class="md-input" name="voucher" id="voucher" />
+                            <label><?php echo $lang=="id"?"Kode Voucher (Opsional)":"Voucher Code (Optional)"; ?></label>
+                        </div>
                         <button type="submit" class="btn primary btn-block p-x-md"><?php echo $lang=="id"?"Masuk":"Sign In"; ?></button>
                     </form>
                 </div>
@@ -128,8 +132,24 @@
             });
 
             function reset() {
-                $('#email').val('');
-                $('#password').val('');
+                var email = '<?php if(isset($_GET['email'])){echo $_GET['email'];}?>';
+                var password = '<?php if(isset($_GET['password'])){echo $_GET['password'];}?>';
+                var voucher = '<?php if(isset($_GET['voucher'])){echo $_GET['voucher'];}?>';
+                if (email) {
+                    $('#email').val(email);
+                } else {
+                    $('#email').val('');
+                }
+                if (password) {
+                    $('#password').val(password);
+                } else {
+                    $('#password').val('');
+                }
+                if (voucher) {
+                    $('#voucher').val(voucher);
+                } else {
+                    $('#voucher').val('');
+                }
             }
 
             function checkerror() {
