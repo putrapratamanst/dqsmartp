@@ -156,7 +156,7 @@ $inx++;
 
                     if ($conn->query($sql) === TRUE) {
 
-                        $sql = "UPDATE `VOUCHERS` SET ASSIGN_ON = '$username', STATE = 'Y', UPDATED_AT = NOW() WHERE VOUCHER = '$voucher'";
+                        $sql = "UPDATE `VOUCHERS` SET ASSIGN_ON = '$email', STATE = 'Y', UPDATED_AT = NOW() WHERE VOUCHER = '$voucher'";
 
                         if ($conn->query($sql) === TRUE) {
 

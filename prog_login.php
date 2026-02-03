@@ -62,68 +62,39 @@ if ($hasil != 0) {
 
     if ($hasil != 0) {
 
-        // Check if user has assigned voucher but hasn't entered it
-
+        // Get user email
         $user_email_check = $conn->query("SELECT EMAIL FROM account WHERE USERNAME = '$username'");
-
         $user_row = $user_email_check->fetch_assoc();
-
         $user_email = $user_row['EMAIL'];
-
         
-
-        $voucher_check = $conn->query("SELECT COUNT(*) as cnt FROM VOUCHERS WHERE ASSIGN_ON = '$user_email' AND STATE = 'N'");
-
-        $voucher_row = $voucher_check->fetch_assoc();
-
-        
-
-        if ($voucher_row['cnt'] > 0 && (!isset($_POST['voucher']) || empty(trim($_POST['voucher'])))) {
-
-            if ($lang == "id") {
-
-                header("location: index.php?error=Silakan lakukan pembayaran atau masukkan kode voucher untuk melanjutkan.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode(isset($_POST['voucher']) ? $_POST['voucher'] : ''));
-
-            } else {
-
-                header("location: index.php?error=Please make payment or enter your voucher code to continue.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode(isset($_POST['voucher']) ? $_POST['voucher'] : ''));
-
-            }
-
-            exit();
-
-        }
-
-        
-
         // If voucher is provided, validate it
-
         if (isset($_POST['voucher']) && !empty(trim($_POST['voucher']))) {
-
             $voucher_code = trim($_POST['voucher']);
-
-            $voucher_sql = "SELECT * FROM VOUCHERS WHERE VOUCHER = '$voucher_code' AND ASSIGN_ON = '$user_email' AND STATE = 'N'";
-
-            $voucher_result = $conn->query($voucher_sql);
-
             
-
-            if ($voucher_result->num_rows == 0) {
-
+            // Check if voucher exists
+            $voucher_check = $conn->query("SELECT STATE, ASSIGN_ON FROM VOUCHERS WHERE VOUCHER = '$voucher_code'");
+            
+            if ($voucher_check->num_rows == 0) {
+                // Voucher not found
                 if ($lang == "id") {
-
-                    header("location: index.php?error=Kode voucher tidak valid atau tidak sesuai dengan akun Anda.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
-
+                    header("location: index.php?error=Kode voucher tidak ditemukan.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
                 } else {
-
-                    header("location: index.php?error=Invalid voucher code or not assigned to your account.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
-
+                    header("location: index.php?error=Voucher code not found.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
                 }
-
                 exit();
-
             }
-
+            
+            $voucher_data = $voucher_check->fetch_assoc();
+            
+            // Check if voucher is already used (STATE = 'Y') or assigned to someone else
+            if ($voucher_data['STATE'] == 'Y' || ($voucher_data['ASSIGN_ON'] != null && $voucher_data['ASSIGN_ON'] != '' && $voucher_data['ASSIGN_ON'] != $user_email)) {
+                if ($lang == "id") {
+                    header("location: index.php?error=Kode voucher tidak valid. Voucher sudah digunakan atau sudah di-assign ke akun lain.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
+                } else {
+                    header("location: index.php?error=Invalid voucher code. Voucher has been used or assigned to another account.&email=" . urlencode($username) . "&password=" . urlencode($password) . "&voucher=" . urlencode($voucher_code));
+                }
+                exit();
+            }
         }
 
         $sql = "SELECT * FROM `account` WHERE USERNAME = '" . $username . "' and password = '" . $password . "' order by ID DESC";
@@ -156,7 +127,7 @@ if ($hasil != 0) {
 
                     if ($conn->query($update_sql)) {
 
-                        $conn->query("UPDATE VOUCHERS SET STATE = 'Y', UPDATED_AT = NOW() WHERE VOUCHER = '$voucher_code'");
+                        $conn->query("UPDATE VOUCHERS SET STATE = 'Y', ASSIGN_ON = '$user_email', UPDATED_AT = NOW() WHERE VOUCHER = '$voucher_code'");
 
                     }
 
