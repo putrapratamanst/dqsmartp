@@ -5,7 +5,6 @@
 include 'program/koneksi.php';
 
 $ID = $_SESSION['ID'];
-
 // Check if result already exists to prevent duplicate submissions
 $sql_check = "SELECT COUNT(*) as cnt FROM `RESULT` WHERE USERID = '$ID'";
 $result_check = $conn->query($sql_check);
@@ -14,6 +13,7 @@ if ($row_check['cnt'] > 0) {
     header("Location: result.php");
     exit;
 }
+
 
 $ans = explode("L",$_GET['answer']);
 
@@ -41,10 +41,10 @@ foreach($ans as $is =>$key) {
 
             {
 
-                $sql = "SELECT @row_number:=@row_number+1 AS row_number, A.* FROM `ANSWER` AS A, (SELECT @row_number:=0) AS t WHERE QUESTION = $ix ORDER BY ID";
+                $sql = "SELECT @rownum:=@rownum+1 AS rownum, A.* FROM `ANSWER` AS A, (SELECT @rownum:=0) AS t WHERE QUESTION = $ix ORDER BY ID";
 
                 $result = $conn->query($sql);
-
+                
                 $res = 0;
 
                 if ($result->num_rows > 0) {
@@ -53,7 +53,7 @@ foreach($ans as $is =>$key) {
 
                     while($row = $result->fetch_assoc()) {
 
-                        if($row['row_number'] == $key)
+                        if($row['rownum'] == $key)
 
                         {
 
@@ -103,7 +103,7 @@ foreach($ans as $is =>$key) {
 
                 $exs = explode("X", $key);
 
-                $sql = "SELECT @row_number:=@row_number+1 AS row_number, A.* FROM `ANSWER` AS A, (SELECT @row_number:=0) AS t WHERE QUESTION = $ix ORDER BY ID";
+                $sql = "SELECT @rownum:=@rownum+1 AS rownum, A.* FROM `ANSWER` AS A, (SELECT @rownum:=0) AS t WHERE QUESTION = $ix ORDER BY ID";
 
                 $result = $conn->query($sql);
 
@@ -115,9 +115,9 @@ foreach($ans as $is =>$key) {
 
                     while($row = $result->fetch_assoc()) {
 
-                        $ind = $row['row_number'] - 1;
+                        $ind = $row['rownum'] - 1;
 
-                        if($row['row_number'] == $exs[$ind])
+                        if($row['rownum'] == $exs[$ind])
 
                         {
 
@@ -169,14 +169,11 @@ foreach($ans as $is =>$key) {
 
 }
 
-
-
 if ($err == 0)
 
 {
 
     $sql = "UPDATE `account` SET STATE = 'FINISH' WHERE ID = " . $ID;
-
 
 
     if ($conn->query($sql) === TRUE) {
